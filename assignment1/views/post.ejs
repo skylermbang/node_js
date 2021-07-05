@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Blog</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const postId = urlParams.get("postId");
+    console.log(postId)
+
+    $(document).ready(function () {
+      get_detail();
+    });
+
+    function get_detail() {
+      $.ajax({
+        type: "GET",
+        url: `/posts/${postId}`,
+        data: {},
+        error: function (xhr, status, error) {
+          if (status == 404) {
+            alert("존재하지 않는 상품입니다.");
+          }
+          window.location.href = "/posts";
+        },
+        success: function (response) {
+          let postDetail = response["detail"];
+          $("#postName").text(postDetail["postName"]);
+
+          sessionStorage.setItem("postId", postId);
+          sessionStorage.setItem("title", postDetail["title"]);
+          sessionStorage.setItem("author", postDetail["author"]);
+          sessionStorage.setItem("contents", postDetail["contetns"]);
+          sessionStorage.setItem("date", postDetail["date"]);
+
+          make_card(response);
+        },
+      });
+
+      function make_card(item) {
+        $("#postDetailBox").empty();
+        let postDetail = item["detail"];
+        console.log(postDetail);
+
+        let title = postDetail["title"];
+        let author = postDetail["author"];
+        let date = postDetail["date"];
+        let contents = postDetail["contents"];
+
+        document.getElementById("title").innerHTML = `<h1>${title}</h1>`;
+        document.getElementById(
+          "date"
+        ).innerHTML = `<h5>Last Edited :${date}</h5>`;
+        document.getElementById(
+          "author"
+        ).innerHTML = `<h3>Author :${author}</h3>`;
+        document.getElementById("contents").innerHTML = `<p>${contents}</p>`;
+      }
+    }
+    function post(){
+    
+      let title =  document.getElementById('inputTitle').value
+      let author =  document.getElementById('inputAuthor').value
+      let contents =  document.getElementById('inputContents').value
+      let pw =  document.getElementById('inputPW').value
+      console.log( title, author , contents, pw)
+      $.ajax({
+        type: "POST",
+        url: "posts/list",
+        data: { title, author ,contents, pw },
+        success: function (response) { // 성공하면
+          console.log(" its working")
+          window.location.href = "/";
+        }
+      })
+    }
+</script>
+  <body>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"> AIGO </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link" href="/">Home</a>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+  
+         
+            </div>
+            <div class="col-12">
+              <label for="inputTitle" class="form-label">Title </label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputTitle"
+                placeholder="Title of this post "
+              />
+            </div>
+
+            <div class="col-12">
+                <label for="inputAuthor" class="form-label">Author</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputAuthor"
+                  placeholder=" Author Name "
+                />
+              </div>
+       
+              <div class="col-12">
+                <label for="inputContents" class="form-label">Contents</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputContents"
+                  placeholder=" What do you want to share ?"
+                />
+              </div>
+           <div class="col-12">
+              <div class="form-check">
+               
+        
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary" onclick="post()"> POST </button>
+              <div class="col-md-2">
+                <label for="inputZip" class="form-label" > Password</label>
+                <input type="text" class="form-control" id="inputPW" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </body>
+</html>
