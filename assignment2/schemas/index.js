@@ -4,7 +4,8 @@ const connect = () => {
   mongoose
 
     //  test:test id/pws @ ip
-    .connect("mongodb://test:test@13.125.199.244:27017", {
+    //  mongodb://test:test@13.125.199.244:27017
+    .connect("mongodb://localhost/asg2", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

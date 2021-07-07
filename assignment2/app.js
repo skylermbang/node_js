@@ -1,7 +1,10 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 const app = express();
 const port = 8080;
 const Date = require("./date");
+const authMiddleware = require("./middlewares/auth-middleware");
 
 // this is middleware for processing the data
 app.use(express.urlencoded({ extended: false })); // request.body ?  to get
@@ -13,13 +16,13 @@ app.use(express.static("public"));
 const connect = require("./schemas");
 connect();
 
-// goods router
-const goodsRouter = require("./routes/goods");
-app.use("/goods", [goodsRouter]);
-
 //posts router
 const postsRouter = require("./routes/posts");
 app.use("/posts", [postsRouter]);
+
+//user router
+const userRouter = require("./routes/user");
+app.use("/user", [userRouter]);
 
 // // mongoose  connect
 // const mongoose = require("mongoose");
@@ -79,7 +82,7 @@ app.set("view engine", "ejs");
 
 //middleware-custome
 app.use((req, res, next) => {
-  console.log(req);
+  //console.log(req);
   next();
 });
 
@@ -97,6 +100,14 @@ app.get("/write", (req, res) => {
 
 app.get("/update", (req, res) => {
   res.render("update");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.get("/list", (req, res) => {
+  res.render("list");
 });
 
 app.get("/test", (req, res) => {

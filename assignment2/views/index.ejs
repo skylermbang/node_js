@@ -17,46 +17,37 @@
   </head>
 
   <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const postId = urlParams.get("postId");
+    console.log(postId);
+
     $(document).ready(function () {
-      get_goods($(this).val());
+      //get_detail();
     });
 
-    function get_goods(category) {
-      $("#goodsList").empty();
-
+    function sign_in() {
+      let id = document.getElementById("id").value;
+      let password = document.getElementById("password").value;
+      console.log(id, password, "checking from html");
       $.ajax({
-        type: "GET",
-        url: `/posts/list/`,
-        data: {},
+        type: "POST",
+        url: "user/auth",
+        data: {
+          id: id,
+          password: password,
+        },
         success: function (response) {
-          let posts = response["posts"];
-          for (let i = 0; i < posts.length; i++) {
-            make_card(posts[i]);
-          }
+          console.log("testing from sucess ajax call");
+          localStorage.setItem("token", response.token);
+          window.location.replace("/list");
+        },
+        error: function (error) {
+          // error messsage
+          //alert(xhr.responseText);
+          alert(error.responseJSON.errorMeasage);
         },
       });
-    }
-
-    function make_card(item) {
-      let htmlTemp = `<div>
-        <div class="card" style="width: 18rem;" onclick="go(${item["postId"]})" >
-          <div class="card-body" ">
-            <h5 class="card-title">${item["postId"]}.${item["title"]}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Author :${item["author"]}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Last updated :${item["date"]}</h6>
-            <p class="card-text">Contents:${item["contents"]}</p>
-            <button          class="btn btn-primary btn-lg"> <h6> Check this post </h6></button>
-
-          </div>
-        </div>
-                              </div>`;
-      $("#goodsList").append(htmlTemp);
-    }
-
-    function go(id) {
-      console.log("shit");
-      console.log(id);
-      location.href = `/detail?postId=${id}`;
     }
   </script>
   <body>
@@ -71,7 +62,7 @@
 
     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#"> AIGOAIGO </a>
+        <a class="navbar-brand" href="#"> AIGO </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -85,44 +76,69 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="/">Home</a>
           </div>
         </div>
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="margin-top: 200px">
       <div class="row">
         <div class="col"></div>
-        <div class="col-6">
-          <h1>Hello, world!</h1>
-          <div id="goodsList" class="mb-5">
-            <div class="card" style="width: 18rem">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+
+        <div class="wrap">
+          <div class="card mx-auto" style="max-width: 480px">
+            <div class="card-body">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"
+                    ><i class="fa fa-user-o" aria-hidden="true"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="ID"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  id="id"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon2"
+                    ><i class="fa fa-lock" aria-hidden="true"></i
+                  ></span>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  aria-describedby="basic-addon2"
+                  id="password"
+                />
               </div>
             </div>
-          </div>
-          <div>
             <button
-              type="button"
-              class="btn btn-primary btn-lg"
-              onclick='window.location.href="/write"'
+              class="btn btn-primary"
+              style="margin-top: 10px"
+              onclick="sign_in()"
             >
-              Post
+              Sign In
+            </button>
+            <button
+              class="btn btn-primary"
+              style="margin-top: 10px"
+              onclick="window.location.href=`./register`"
+            >
+              Sign Up
             </button>
           </div>
         </div>
-
-        <div class="col"></div>
       </div>
     </div>
+
+    <div class="col"></div>
   </body>
 </html>
