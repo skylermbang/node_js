@@ -20,15 +20,13 @@ router.get("/:postId", async (req, res) => {
   const { postId } = req.params;
   posts = await Posts.findOne({ postId: postId });
   res.json({ detail: posts });
-  //console.log(coins);
-  // res.send(coins);
-  // res.render("detail");
 });
 
 router.post("/list", async (req, res) => {
   console.log("trying now ");
 
   const posts = await Posts.find();
+  console.log(posts);
   const postId = posts.length + 1;
   const { title, author, contents, pw } = req.body;
 

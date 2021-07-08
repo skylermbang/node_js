@@ -47,15 +47,20 @@ router.post("/auth", async (req, res) => {
     return;
   }
 
-  const token = jwt.sign({ userId: user.Id }, "walaby");
+  const token = jwt.sign({ user: user.id }, "walaby");
+  //console.log(token, "test from auth api");
   res.send({
     token,
   });
-  console.log(token);
 });
 
 router.get("/me", authMiddleware, async (req, res) => {
-  res.status(400).send({});
+  const { user } = res.locals;
+  res.send({
+    user: {
+      id: user.id,
+    },
+  });
 });
 
 module.exports = router;

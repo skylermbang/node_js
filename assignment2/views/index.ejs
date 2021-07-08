@@ -17,6 +17,8 @@
   </head>
 
   <script>
+    localStorage.clear();
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const postId = urlParams.get("postId");
@@ -76,7 +78,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/" onclick="singOut()">Home</a>
+            <a class="nav-link" href="/list" ">List</a>
           </div>
         </div>
       </div>
@@ -139,6 +142,6 @@
       </div>
     </div>
 
-    <div class="col"></div>
+    <div class="col" id="userName"></div>
   </body>
 </html>

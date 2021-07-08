@@ -22,55 +22,57 @@
     const postId = urlParams.get("postId");
     console.log(postId)
 
+    
+
     $(document).ready(function () {
-      get_detail();
+      // get_detail();
     });
 
-    function get_detail() {
-      $.ajax({
-        type: "GET",
-        url: `/posts/${postId}`,
-        data: {},
-        error: function (xhr, status, error) {
-          if (status == 404) {
-            alert("존재하지 않는 상품입니다.");
-          }
-          window.location.href = "/posts";
-        },
-        success: function (response) {
-          let postDetail = response["detail"];
-          $("#postName").text(postDetail["postName"]);
+    // function get_detail() {
+    //   $.ajax({
+    //     type: "GET",
+    //     url: `/posts/${postId}`,
+    //     data: {},
+    //     error: function (xhr, status, error) {
+    //       if (status == 404) {
+    //         alert("존재하지 않는 상품입니다.");
+    //       }
+    //       window.location.href = "/posts";
+    //     },
+    //     success: function (response) {
+    //       let postDetail = response["detail"];
+    //       $("#postName").text(postDetail["postName"]);
 
-          sessionStorage.setItem("postId", postId);
-          sessionStorage.setItem("title", postDetail["title"]);
-          sessionStorage.setItem("author", postDetail["author"]);
-          sessionStorage.setItem("contents", postDetail["contetns"]);
-          sessionStorage.setItem("date", postDetail["date"]);
+    //       sessionStorage.setItem("postId", postId);
+    //       sessionStorage.setItem("title", postDetail["title"]);
+    //       sessionStorage.setItem("author", postDetail["author"]);
+    //       sessionStorage.setItem("contents", postDetail["contetns"]);
+    //       sessionStorage.setItem("date", postDetail["date"]);
 
-          make_card(response);
-        },
-      });
+    //       make_card(response);
+    //     },
+    //   });
 
-      function make_card(item) {
-        $("#postDetailBox").empty();
-        let postDetail = item["detail"];
-        console.log(postDetail);
+    //   function make_card(item) {
+    //     $("#postDetailBox").empty();
+    //     let postDetail = item["detail"];
+    //     console.log(postDetail);
 
-        let title = postDetail["title"];
-        let author = postDetail["author"];
-        let date = postDetail["date"];
-        let contents = postDetail["contents"];
+    //     let title = postDetail["title"];
+    //     let author = postDetail["author"];
+    //     let date = postDetail["date"];
+    //     let contents = postDetail["contents"];
 
-        document.getElementById("title").innerHTML = `<h1>${title}</h1>`;
-        document.getElementById(
-          "date"
-        ).innerHTML = `<h5>Last Edited :${date}</h5>`;
-        document.getElementById(
-          "author"
-        ).innerHTML = `<h3>Author :${author}</h3>`;
-        document.getElementById("contents").innerHTML = `<p>${contents}</p>`;
-      }
-    }
+    //     document.getElementById("title").innerHTML = `<h1>${title}</h1>`;
+    //     document.getElementById(
+    //       "date"
+    //     ).innerHTML = `<h5>Last Edited :${date}</h5>`;
+    //     document.getElementById(
+    //       "author"
+    //     ).innerHTML = `<h3>Author :${author}</h3>`;
+    //     document.getElementById("contents").innerHTML = `<p>${contents}</p>`;
+    //   }
+    // }
     function post(){
     
       let title =  document.getElementById('inputTitle').value
@@ -115,7 +117,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/" onclick="singOut()">Home</a>
+            <a class="nav-link" href="/list" ">List</a>
 
           </div>
         </div>

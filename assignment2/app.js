@@ -24,6 +24,10 @@ app.use("/posts", [postsRouter]);
 const userRouter = require("./routes/user");
 app.use("/user", [userRouter]);
 
+//comment router
+const commentRouter = require("./routes/comment");
+app.use("/comment", [commentRouter]);
+
 // // mongoose  connect
 // const mongoose = require("mongoose");
 // app.get("/mongodb", async (req, res) => {
